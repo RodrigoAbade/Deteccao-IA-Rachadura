@@ -21,8 +21,8 @@ ultimo_alerta = 0
 # CONFIGURAÇÕES DE E-MAIL (HOSTINGER)
 # ==============================
 EMAIL_REMETENTE = "alerta@walleye.com.br"
-SENHA = "n#7CEAFdc@"  # ideal usar variável de ambiente em produção
-EMAIL_DESTINATARIO = "rodrigoabade26@gmail.com"
+SENHA = ""  # ideal usar variável de ambiente em produção
+EMAIL_DESTINATARIO = ""
 
 SMTP_HOST = "smtp.hostinger.com"
 SMTP_PORT = 587  # TLS
