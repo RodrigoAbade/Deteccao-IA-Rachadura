@@ -18,12 +18,12 @@ with open('configs/device_config.yaml', 'r') as f:
 model_path = 'runs/segment/train7/weights/best.pt'
 model = YOLO(model_path)
 
-EMAIL_REMETENTE = "alerta@walleye.com.br"
-SENHA = "n#7CEAFdc@" 
-EMAIL_DESTINATARIO = ""
+EMAIL_REMETENTE = os.environ.get("WALLEYE_EMAIL_FROM", "")
+SENHA = os.environ.get("WALLEYE_SMTP_PASSWORD", "")
+EMAIL_DESTINATARIO = os.environ.get("WALLEYE_EMAIL_TO", "")
 
-SMTP_HOST = "smtp.hostinger.com"
-SMTP_PORT = 587  
+SMTP_HOST = os.environ.get("WALLEYE_SMTP_HOST", "smtp.hostinger.com")
+SMTP_PORT = int(os.environ.get("WALLEYE_SMTP_PORT", "587"))
 
 DELAY_ALERTA = 300  
 ultimo_alerta = 0
@@ -33,6 +33,10 @@ ultimo_alerta = 0
 # ----------------------
 def enviar_email(imagem_path):
     try:
+        if not all((EMAIL_REMETENTE, SENHA, EMAIL_DESTINATARIO)):
+            raise ValueError(
+                "Configure WALLEYE_EMAIL_FROM, WALLEYE_SMTP_PASSWORD e WALLEYE_EMAIL_TO."
+            )
         msg = MIMEMultipart("alternative")
         msg['From'] = EMAIL_REMETENTE
         msg['To'] = EMAIL_DESTINATARIO

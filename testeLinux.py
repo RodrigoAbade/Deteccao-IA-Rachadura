@@ -20,18 +20,22 @@ ultimo_alerta = 0
 # ==============================
 # CONFIGURAÇÕES DE E-MAIL (HOSTINGER)
 # ==============================
-EMAIL_REMETENTE = "alerta@walleye.com.br"
-SENHA = ""  # ideal usar variável de ambiente em produção
-EMAIL_DESTINATARIO = ""
+EMAIL_REMETENTE = os.environ.get("WALLEYE_EMAIL_FROM", "")
+SENHA = os.environ.get("WALLEYE_SMTP_PASSWORD", "")
+EMAIL_DESTINATARIO = os.environ.get("WALLEYE_EMAIL_TO", "")
 
-SMTP_HOST = "smtp.hostinger.com"
-SMTP_PORT = 587  # TLS
+SMTP_HOST = os.environ.get("WALLEYE_SMTP_HOST", "smtp.hostinger.com")
+SMTP_PORT = int(os.environ.get("WALLEYE_SMTP_PORT", "587"))
 
 # ==============================
 # FUNÇÃO DE ENVIO DE E-MAIL
 # ==============================
 def enviar_email(imagem_path):
     try:
+        if not all((EMAIL_REMETENTE, SENHA, EMAIL_DESTINATARIO)):
+            raise ValueError(
+                "Configure WALLEYE_EMAIL_FROM, WALLEYE_SMTP_PASSWORD e WALLEYE_EMAIL_TO."
+            )
         msg = MIMEMultipart()
         msg["From"] = EMAIL_REMETENTE
         msg["To"] = EMAIL_DESTINATARIO
