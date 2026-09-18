@@ -5,3 +5,10 @@ venv/
 *.lib
 
 *.pt
+
+# Configurações locais de e-mail
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
